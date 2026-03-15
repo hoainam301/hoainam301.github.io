@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP MENU - HOAI NAM</title>
+    <style>
+        :root {
+            --cyan: #00e5ff;
+            --pink: #ff00ea;
+            --bg: #000;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .menu-container {
+            width: 100%;
+            max-width: 380px;
+            background: linear-gradient(180deg, #0a1114 0%, #000 100%);
+            border-left: 2px solid var(--cyan);
+            border-right: 2px solid var(--cyan);
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        /* Monitor Box - Phần CHẠY SỐ */
+        .monitor {
+            border: 1.5px solid var(--cyan);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 229, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+
+        .mon-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--cyan);
+            letter-spacing: 1px;
+        }
+
+        .mon-body {
+            font-family: 'Courier New', monospace;
+            color: var(--cyan);
+            font-size: 13px;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .scan-bar {
+            height: 3px;
+            background: #111;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .scan-line {
+            width: 40%;
+            height: 100%;
+            background: var(--cyan);
+            position: absolute;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: scanning 2s infinite linear;
+        }
+
+        @keyframes scanning {
+            0% { left: -40%; }
+            100% { left: 100%; }
+        }
+
+        /* Item Card */
+        .card {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 18px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--cyan); }
+
+        .icon-box {
+            width: 45px;
+            height: 45px;
+            background: #0d1e21;
+            border-radius: 12px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #1a3a3f;
+            font-size: 20px;
+        }
+
+        .info { display: flex; flex-direction: column; }
+        .name { font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .sub { font-size: 10px; color: #555; }
+
+        /* Switch Button */
+        .switch { position: relative; width: 44px; height: 22px; cursor: pointer; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #1a2a2e; border-radius: 20px; transition: .3s; border: 1px solid #333;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px;
+            left: 2px; bottom: 2px; background: #444; border-radius: 50%; transition: .3s;
+        }
+        input:checked + .slider { background: #002d33; border-color: var(--cyan); }
+        input:checked + .slider:before { transform: translateX(22px); background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+
+        /* Range Style */
+        .range-container {
+            background: #0a0a0a;
+            border-radius: 18px;
+            padding: 15px;
+            border: 1px solid #1a1a1a;
+            margin-top: 10px;
+        }
+        .range-head { display: flex; justify-content: space-between; color: var(--cyan); font-weight: bold; font-size: 12px; margin-bottom: 8px; }
+        input[type=range] { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+
+        button {
+            width: 100%; padding: 15px; margin-top: 20px; border-radius: 30px; 
+            border: 1px solid var(--cyan); background: transparent; color: var(--cyan); 
+            font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <div class="monitor" id="mon-box">
+        <div class="mon-head">
+            <span>SYSTEM MONITOR</span>
+            <span id="mon-status">[RUNNING]</span>
+        </div>
+        <div class="mon-body">
+            > FPS: <span id="fps-num">60</span><br>
+            > LATENCY: <span id="ping-num">24</span> ms<br>
+            > GPU: <span id="gpu-num">850</span> MHz<br>
+            > ENGINE: <span id="engine-text">NORMAL</span>
+        </div>
+        <div class="scan-bar"><div class="scan-line" id="mon-line"></div></div>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box">🎯</div>
+            <div class="info"><span class="name">Aimlock VIP</span><span class="sub">Lock on target</span></div>
+        </div>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box">💀</div>
+            <div class="info"><span class="name">Headlock VIP</span><span class="sub">Priority headshot</span></div>
+        </div>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box">🧠</div>
+            <div class="info"><span class="name">Aim Head</span><span class="sub">Auto head tracking</span></div>
+        </div>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box">🤖</div>
+            <div class="info"><span class="name">Aim Bot</span><span class="sub">Smart assist</span></div>
+        </div>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    </div>
+
+    <div class="card" style="border-color: var(--cyan);">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box" style="border-color: var(--cyan);">⚡</div>
+            <div class="info"><span class="name" style="color:var(--cyan);">Unlock 120 FPS</span><span class="sub">Extreme Smooth</span></div>
+        </div>
+        <label class="switch"><input type="checkbox" id="fps-toggle" onchange="toggleFPS()"><span class="slider"></span></label>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center;">
+            <div class="icon-box">🌐</div>
+            <div class="info"><span class="name">Fix Lag</span><span class="sub">Optimize system</span></div>
+        </div>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    </div>
+
+    <div class="range-container">
+        <div class="range-head"><span>SENSITIVITY</span><span id="sens-val">1.0x</span></div>
+        <input type="range" min="0.5" max="3.0" step="0.1" value="1.0" oninput="document.getElementById('sens-val').innerText = this.value + 'x'">
+    </div>
+
+    <div class="range-container">
+        <div class="range-head"><span>DPI CONTROL</span><span id="dpi-val">480</span></div>
+        <input type="range" min="100" max="1000" value="480" oninput="document.getElementById('dpi-val').innerText = this.value">
+    </div>
+
+    <button onclick="alert('Đã kích hoạt cấu hình VIP!')">Kích hoạt cấu hình</button>
+</div>
+
+<script>
+    // GIỮ NGUYÊN LOGIC BẢNG CHẠY SỐ
+    setInterval(() => {
+        const is120 = document.getElementById('fps-toggle').checked;
+        const baseFPS = is120 ? 117 : 58;
+        document.getElementById('fps-num').innerText = baseFPS + Math.floor(Math.random() * 6);
+        document.getElementById('ping-num').innerText = 18 + Math.floor(Math.random() * 12);
+        document.getElementById('gpu-num').innerText = 820 + Math.floor(Math.random() * 40);
+    }, 200);
+
+    function toggleFPS() {
+        const check = document.getElementById('fps-toggle').checked;
+        const status = document.getElementById('mon-status');
+        const text = document.getElementById('engine-text');
+        const line = document.getElementById('mon-line');
+        const box = document.getElementById('mon-box');
+
+        if(check) {
+            status.innerText = "[BOOSTED - 120HZ]";
+            status.style.color = "#ff00ea";
+            text.innerText = "ULTRA BOOST";
+            line.style.background = "#ff00ea";
+            box.style.borderColor = "#ff00ea";
+        } else {
+            status.innerText = "[RUNNING]";
+            status.style.color = "#00e5ff";
+            text.innerText = "NORMAL";
+            line.style.background = "#00e5ff";
+            box.style.borderColor = "#00e5ff";
+        }
+    }
+</script>
+
+</body>
+</html>
